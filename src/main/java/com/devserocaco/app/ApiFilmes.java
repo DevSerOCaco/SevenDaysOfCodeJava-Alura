@@ -12,6 +12,7 @@ import java.util.Properties;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class ApiFilmes {
 
@@ -53,25 +54,33 @@ public class ApiFilmes {
 				
 				JsonNode ArrayFilmes = jsonNode.get("results");
 				for (JsonNode lista : ArrayFilmes) {
-					Movie movie = new Movie(lista.get("adult").asBoolean(),
-							lista.get("backdrop_path").asText(),
-							lista.get("genre_ids").findValuesAsText("genre_ids"), 
-							lista.get("id").asInt(), 
-							lista.get("original_language").asText(), 
-							lista.get("original_title").asText(), 
-							lista.get("overview").asText(), 
-							lista.get("popularity").asDouble(), 
-							lista.get("poster_path").asText(), 
-							lista.get("release_date").asText(), 
-							lista.get("title").asText(), 
-							lista.get("video").asBoolean(), 
-							lista.get("vote_average").asDouble(), 
-							lista.get("vote_count").asInt());
-					movies.add(movie);
-					
+				    ArrayNode genreIdsNode = (ArrayNode) lista.get("genre_ids");
+				    int[] genreIds = new int[genreIdsNode.size()];
+				    for (int i = 0; i < genreIdsNode.size(); i++) {
+				        genreIds[i] = genreIdsNode.get(i).asInt();
+				    }
+
+				    Movie movie = new Movie(
+				        lista.get("adult").asBoolean(),
+				        lista.get("backdrop_path").asText(),
+				        genreIds,
+				        lista.get("id").asInt(),
+				        lista.get("original_language").asText(),
+				        lista.get("original_title").asText(),
+				        lista.get("overview").asText(),
+				        lista.get("popularity").asDouble(),
+				        lista.get("poster_path").asText(),
+				        lista.get("release_date").asText(),
+				        lista.get("title").asText(),
+				        lista.get("video").asBoolean(),
+				        lista.get("vote_average").asDouble(),
+				        lista.get("vote_count").asInt()
+				    );
+				    System.out.println(movie);
+				    movies.add(movie);
 				}
 				
-				System.out.println(movies);
+				System.out.println(movies.get(0).getGenre_ids()[1]);
 	}
 
 }
