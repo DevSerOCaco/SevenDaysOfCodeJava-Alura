@@ -6,6 +6,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -46,10 +48,30 @@ public class ApiFilmes {
 				
 				JsonNode jsonNode = objectMapper.readTree(jsonFilmes);
 				
+				
+				List<Movie> movies = new ArrayList<Movie>();
+				
 				JsonNode ArrayFilmes = jsonNode.get("results");
 				for (JsonNode lista : ArrayFilmes) {
-					System.out.println(lista.get("original_title"));
+					Movie movie = new Movie(lista.get("adult").asBoolean(),
+							lista.get("backdrop_path").asText(),
+							lista.get("genre_ids").findValuesAsText("genre_ids"), 
+							lista.get("id").asInt(), 
+							lista.get("original_language").asText(), 
+							lista.get("original_title").asText(), 
+							lista.get("overview").asText(), 
+							lista.get("popularity").asDouble(), 
+							lista.get("poster_path").asText(), 
+							lista.get("release_date").asText(), 
+							lista.get("title").asText(), 
+							lista.get("video").asBoolean(), 
+							lista.get("vote_average").asDouble(), 
+							lista.get("vote_count").asInt());
+					movies.add(movie);
+					
 				}
+				
+				System.out.println(movies);
 	}
 
 }
