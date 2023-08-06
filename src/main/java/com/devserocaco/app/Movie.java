@@ -107,7 +107,7 @@ public class Movie {
 
 	@Override
 	public String toString() {
-		return "Movie [adult=" + adult + ", backdrop_path=" + backdrop_path + ", genre_ids=" + genre_ids + ", id=" + id
+		return "Movie [adult=" + adult + ", backdrop_path=" + backdrop_path + ", genre_ids=" + genre_ids.toString() + ", id=" + id
 				+ ", original_languege=" + original_languege + ", original_title=" + original_title + ", overiew="
 				+ overiew + ", popularity=" + popularity + ", poster_path=" + poster_path + ", release_date="
 				+ release_date + ", title=" + title + ", video=" + video + ", vote_avarage=" + vote_avarage

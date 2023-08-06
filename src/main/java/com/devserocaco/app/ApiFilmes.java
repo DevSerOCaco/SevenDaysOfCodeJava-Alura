@@ -2,6 +2,7 @@ package com.devserocaco.app;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -54,7 +55,7 @@ public class ApiFilmes {
 				
 				JsonNode ArrayFilmes = jsonNode.get("results");
 				for (JsonNode lista : ArrayFilmes) {
-				    ArrayNode genreIdsNode = (ArrayNode) lista.get("genre_ids");
+					ArrayNode genreIdsNode = (ArrayNode) lista.get("genre_ids");
 				    int[] genreIds = new int[genreIdsNode.size()];
 				    for (int i = 0; i < genreIdsNode.size(); i++) {
 				        genreIds[i] = genreIdsNode.get(i).asInt();
@@ -80,7 +81,22 @@ public class ApiFilmes {
 				    movies.add(movie);
 				}
 				
-				System.out.println(movies.get(0).getGenre_ids()[1]);
+				
+				//Gerando o HTML
+				
+				try {
+					System.out.println(movies.get(0).getGenre_ids()[1]);
+					
+					PrintWriter writer = new PrintWriter("filmes.html");
+					
+					HTMLGenerator gerador = new HTMLGenerator(writer, movies);
+					gerador.generate();
+					
+					writer.close();	
+					System.out.println("HTML GERADO COM SUCESSO");
+				} catch (IOException e) {
+					System.out.println("Ocorreu um erro ao gerar o HTML:" + e);
+				}
 	}
 
 }
